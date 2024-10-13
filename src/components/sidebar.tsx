@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import {Home, Calendar, MessageSquare, Settings} from 'lucide-react'
+import {Home, Calendar, MessageSquare, Settings, Gauge} from 'lucide-react'
 import {Button} from '@/components/ui/button'
 
 export default function Sidebar() {
@@ -24,6 +24,12 @@ export default function Sidebar() {
                     <Link href="/assistant" className="flex items-center space-x-2">
                         <MessageSquare className="h-5 w-5"/>
                         <span>AI Assistant</span>
+                    </Link>
+                </Button>
+                <Button asChild variant="ghost" className="w-full justify-start">
+                    <Link href="/productivity-dashboard" className="flex items-center space-x-2 text-wrap">
+                        <Gauge className="h-5 w-5"/>
+                        <span>Performance</span>
                     </Link>
                 </Button>
                 <Button asChild variant="ghost" className="w-full justify-start">
