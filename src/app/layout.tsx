@@ -18,12 +18,13 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
             disableTransitionOnChange
         >
             <div className="flex h-screen">
-
-                <div className={"w-24 mr-4"}><Sidebar/></div>
+                <div className={"w-36 mr-4"}>
+                    <Sidebar/>
+                </div>
                 <main className="flex-1 overflow-y-auto p-8">
                     <div className="container mx-auto">
                         <div className="flex justify-between items-center mb-8">
-                            <h1 className="text-4xl font-bold ">Student Productivity App</h1>
+                            <h1 className="text-4xl font-bold ">StudyTracker</h1>
                             <ThemeToggle/>
                         </div>
                         {children}
@@ -41,7 +42,7 @@ function ThemeToggle() {
 
     return (
         <Button
-            variant="outline"
+            variant="default"
             size="icon"
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
         >

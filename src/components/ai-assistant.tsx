@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from '@/components/ui/card'
 import {Button} from '@/components/ui/button'
 import {Input} from '@/components/ui/input'
@@ -10,6 +10,7 @@ import {Mic} from 'lucide-react'
 export default function AIAssistant({className = ''}) {
     const [messages, setMessages] = useState<Array<{ text: string; sender: 'user' | 'ai' }>>([])
     const [input, setInput] = useState('')
+    const scrollAreaRef = useRef<HTMLDivElement>(null)
 
     const handleSend = () => {
         if (input.trim()) {
@@ -23,34 +24,44 @@ export default function AIAssistant({className = ''}) {
         }
     }
 
+    useEffect(() => {
+        if (scrollAreaRef.current) {
+            scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight
+        }
+    }, [messages])
+
     return (
-        <Card className={`flex flex-col rounded-lg overflow-hidden ${className}`}>
-            <CardHeader>
-                <CardTitle>AI Assistant</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 overflow-hidden">
-                <ScrollArea className="h-full pr-4">
-                    {messages.map((message, index) => (
-                        <div
-                            key={index}
-                            className={`mb-4 ${
-                                message.sender === 'user' ? 'text-right' : 'text-left'
-                            }`}
-                        >
-              <span
-                  className={`inline-block p-2 rounded-lg ${
-                      message.sender === 'user'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-secondary text-secondary-foreground'
-                  }`}
-              >
-                {message.text}
-              </span>
-                        </div>
-                    ))}
+        <Card className={`flex flex-col rounded-xl overflow-hidden ${className}`}
+              style={{height: 'calc(81.5vh - 2rem)'}}>
+            {/*<CardHeader>*/}
+                <CardTitle className="bg-blue-100 dark:bg-gray-800 dark:text-blue-100
+                text-lg font-semibold p-3 mb-4">AI Assistant</CardTitle>
+            {/*</CardHeader>*/}
+            <CardContent className="flex-1 overflow-hidden p-0">
+                <ScrollArea className="h-full px-4" ref={scrollAreaRef}>
+                    <div className="space-y-4 pb-4">
+                        {messages.map((message, index) => (
+                            <div
+                                key={index}
+                                className={`flex ${
+                                    message.sender === 'user' ? 'justify-end' : 'justify-start'
+                                }`}
+                            >
+                                <div
+                                    className={`max-w-[80%] p-2 rounded-lg ${
+                                        message.sender === 'user'
+                                            ? 'bg-primary text-primary-foreground'
+                                            : 'bg-secondary text-secondary-foreground'
+                                    }`}
+                                >
+                                    {message.text}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </ScrollArea>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="p-4 bg-background">
                 <div className="flex w-full items-center space-x-2">
                     <Input
                         value={input}

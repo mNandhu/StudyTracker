@@ -8,7 +8,7 @@ export default function Home() {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[calc(100vh-120px)]">
             <div className="lg:row-span-2">
-                <div className={"h-full"}><AIAssistant/></div>
+                <AIAssistant/>
             </div>
             <div className="space-y-6">
                 <CalendarWidget/>

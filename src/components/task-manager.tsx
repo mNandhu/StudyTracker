@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useState} from 'react'
-import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card'
+import {Card, CardContent, CardTitle} from '@/components/ui/card'
 import {Checkbox} from '@/components/ui/checkbox'
 import {Input} from '@/components/ui/input'
 import {Button} from '@/components/ui/button'
@@ -24,20 +24,12 @@ export default function TaskManager() {
     }
 
     return (
-        <Card className="rounded-lg overflow-hidden">
-            <CardHeader>
-                <CardTitle>Tasks</CardTitle>
-            </CardHeader>
+        <Card className="rounded-xl overflow-hidden">
+            {/*<CardHeader>*/}
+                <CardTitle className="bg-blue-100 dark:bg-gray-800 dark:text-blue-100
+                text-lg font-semibold p-3 mb-4">Tasks</CardTitle>
+            {/*</CardHeader>*/}
             <CardContent>
-                <div className="flex space-x-2 mb-4">
-                    <Input
-                        value={newTask}
-                        onChange={(e) => setNewTask(e.target.value)}
-                        placeholder="Add a new task"
-                        onKeyPress={(e) => e.key === 'Enter' && addTask()}
-                    />
-                    <Button onClick={addTask}>Add</Button>
-                </div>
                 <ul className="space-y-2">
                     {tasks.map(task => (
                         <li key={task.id} className="flex items-center space-x-2">
@@ -55,6 +47,16 @@ export default function TaskManager() {
                         </li>
                     ))}
                 </ul>
+                <div className="flex space-x-2 mt-4">
+                    <Input
+                        value={newTask}
+                        onChange={(e) => setNewTask(e.target.value)}
+                        placeholder="Add a new task"
+                        onKeyDown={(e) => e.key === 'Enter' && addTask()}
+                        className={"rounded-xl"}
+                    />
+                    <Button onClick={addTask}>Add</Button>
+                </div>
             </CardContent>
         </Card>
     )

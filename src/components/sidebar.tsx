@@ -5,7 +5,8 @@ import {Button} from '@/components/ui/button'
 
 export default function Sidebar() {
     return (
-        <aside className="w-64 bg-secondary text-secondary-foreground pl-0.5 pt-6">
+        <aside
+            className="w-36 h-full bg-secondary text-secondary-foreground pl-0.5 pt-6 border-r border-black dark:border-white">
             <nav className="space-y-2">
                 <Button asChild variant="ghost" className="w-full justify-start">
                     <Link href="/" className="flex items-center space-x-2">
