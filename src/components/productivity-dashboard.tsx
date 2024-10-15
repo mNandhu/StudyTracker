@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react'
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card'
 import {Progress} from '@/components/ui/progress'
@@ -32,7 +34,7 @@ export default function ProductivityDashboard() {
                 <div className="space-y-4">
                     <div>
                         <h3 className="text-lg font-medium">Weekly Goal Progress</h3>
-                        <Progress value={75} className="w-full"/>
+                        <Progress value={75} className="w-full [&>*]:bg-green-600 dark:[&>*]:bg-green-400"/>
                     </div>
                     <div>
                         <h3 className="text-lg font-medium mb-2">Study Hours</h3>
