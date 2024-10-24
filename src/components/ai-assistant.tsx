@@ -39,11 +39,11 @@ interface AIAssistantProps {
 }
 
 export default function AIAssistant({
-                                chatId,
-                                onUpdateTitle,
-                                onDeleteChat,
-                                onCreateChat,
-                            }: AIAssistantProps) {
+                                        chatId,
+                                        onUpdateTitle,
+                                        onDeleteChat,
+                                        onCreateChat,
+                                    }: AIAssistantProps) {
     const [currentChat, setCurrentChat] = useState<Chat | null>(null)
     const [input, setInput] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -55,18 +55,9 @@ export default function AIAssistant({
     const messagesEndRef = useRef<HTMLDivElement>(null)
     const {toast} = useToast()
 
-    useEffect(() => {
-        if (chatId) {
-            fetchChat(chatId)
-        }
-    }, [chatId])
-
-    useEffect(() => {
-        scrollToBottom()
-    }, [currentChat?.messages])
-
     const fetchChat = async (id: string) => {
         setIsFetching(true)
+        console.log("Attempting to fetch chat with id: ", id)
         try {
             const response = await fetch(`http://localhost:5000/chats/${id}`)
             if (!response.ok) throw new Error('Failed to fetch chat')
@@ -83,6 +74,16 @@ export default function AIAssistant({
             setIsFetching(false)
         }
     }
+
+    useEffect(() => {
+        if (chatId) {
+            fetchChat(chatId)
+        }
+    }, [chatId])
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [currentChat?.messages])
 
     const sendMessage = async () => {
         if (!input.trim() || !chatId || !currentChat) return
@@ -214,7 +215,7 @@ export default function AIAssistant({
 
     if (!chatId || !currentChat) {
         return (
-            <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col">
+            <Card className="w-full max-w-4xl mx-auto h-[709px] flex flex-col">
                 <CardHeader className="flex-shrink-0">
                     <CardTitle className="text-2xl font-bold">AI Assistant</CardTitle>
                 </CardHeader>
@@ -230,7 +231,7 @@ export default function AIAssistant({
 
     return (
         <>
-            <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col">
+            <Card className="w-full max-w-4xl mx-auto flex flex-col">
                 <CardHeader className="flex-shrink-0 flex flex-row items-center justify-between">
                     {isEditing ? (
                         <div className="flex items-center space-x-2">

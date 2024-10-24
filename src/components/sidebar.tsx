@@ -13,8 +13,8 @@ import {
     SidebarMenuButton,
     SidebarMenuSub,
     SidebarMenuSubItem,
-    SidebarMenuSubButton, SidebarTrigger,
-    // SidebarTrigger,
+    SidebarMenuSubButton,
+    SidebarTrigger,
 } from '@/components/ui/sidebar'
 import {
     DropdownMenu,
@@ -34,12 +34,10 @@ import {
     Settings,
     MessageSquare,
     User2,
-    ChevronUp,
     ChevronDown,
     LogOut,
     Sun,
     Moon,
-    // Menu,
     Plus,
     Trash2,
     MessageCircle,
@@ -53,38 +51,34 @@ interface Chat {
 
 export default function AppSidebar() {
     const {setTheme, theme} = useTheme()
-    // const [isCollapsed, setIsCollapsed] = useState(false)
     const [isAIMenuOpen, setIsAIMenuOpen] = useState(false)
-
     const pathname = usePathname()
+    const router = useRouter()
+    const [chats, setChats] = useState<Chat[]>([])
+    const [isLoading, setIsLoading] = useState(false)
+
     const isActive = (path: string) => pathname === path
 
     const toggleTheme = () => {
         setTheme(theme === 'dark' ? 'light' : 'dark')
     }
 
-    const router = useRouter();
-
-    const [chats, setChats] = useState<Chat[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-
-    // Fetch existing chats on component mount
     useEffect(() => {
-        fetchChats();
-    }, []);
+        fetchChats()
+    }, [])
 
     const fetchChats = async () => {
         try {
-            const response = await fetch('http://localhost:5000/chats');
-            const data = await response.json();
-            setChats(data);
+            const response = await fetch('http://localhost:5000/chats')
+            const data = await response.json()
+            setChats(data)
         } catch (error) {
-            console.error('Error fetching chats:', error);
+            console.error('Error fetching chats:', error)
         }
-    };
+    }
 
     const createNewChat = async () => {
-        setIsLoading(true);
+        setIsLoading(true)
         try {
             const response = await fetch('http://localhost:5000/chats', {
                 method: 'POST',
@@ -92,47 +86,47 @@ export default function AppSidebar() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({title: `Chat ${chats.length + 1}`}),
-            });
-            const newChat = await response.json();
-            setChats(prevChats => [...prevChats, newChat]);
-            router.push(`/assistant/${newChat.id}`);
+            })
+            const newChat = await response.json()
+            setChats(prevChats => [...prevChats, newChat])
+            router.push(`/assistant/${newChat.id}`)
         } catch (error) {
-            console.error('Error creating new chat:', error);
+            console.error('Error creating new chat:', error)
         } finally {
-            setIsLoading(false);
+            setIsLoading(false)
         }
-    };
+    }
 
     const deleteChat = async (chatId: string, e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault()
+        e.stopPropagation()
 
         try {
             await fetch(`http://localhost:5000/chats/${chatId}`, {
                 method: 'DELETE',
-            });
-            setChats(prevChats => prevChats.filter(chat => chat.id !== chatId));
+            })
+            setChats(prevChats => prevChats.filter(chat => chat.id !== chatId))
 
-            // If we're on the deleted chat's page, redirect to the first available chat or home
-            if (router.query.chatId === chatId) {
-                const remainingChats = chats.filter(chat => chat.id !== chatId);
+            if (pathname === `/assistant/${chatId}`) {
+                const remainingChats = chats.filter(chat => chat.id !== chatId)
                 if (remainingChats.length > 0) {
-                    router.push(`/assistant/${remainingChats[0].id}`);
+                    router.push(`/assistant/${remainingChats[0].id}`)
                 } else {
-                    router.push('/assistant');
+                    router.push('/assistant')
                 }
             }
         } catch (error) {
-            console.error('Error deleting chat:', error);
+            console.error('Error deleting chat:', error)
         }
-    };
+    }
 
     const isChatActive = (chatId: string) => {
-        return router.query?.chatId === chatId;
-    };
+        return pathname === `/assistant/${chatId}`
+    }
 
     return (
-        <Sidebar collapsible="icon" className="border-r fixed left-0 top-0 h-full">
+        <Sidebar collapsible="icon"
+                 className="border-r fixed left-0 top-0 h-full transition-all duration-300 ease-in-out">
             <SidebarHeader className="p-4">
                 <Link href="/" className="flex items-center space-x-2">
                     <BookOpen className="h-6 w-6"/>
@@ -144,7 +138,7 @@ export default function AppSidebar() {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <Link href="/" passHref legacyBehavior>
-                                <SidebarMenuButton asChild isActive={isActive('/')} className={"ml-2"}>
+                                <SidebarMenuButton asChild isActive={isActive('/')} className="ml-2">
                                     <a className="flex items-center">
                                         <Home className="h-4 w-4"/>
                                         <span className="group-data-[collapsible=icon]:hidden">Dashboard</span>
@@ -152,14 +146,13 @@ export default function AppSidebar() {
                                 </SidebarMenuButton>
                             </Link>
                         </SidebarMenuItem>
-                        <Collapsible open={isAIMenuOpen} onOpenChange={setIsAIMenuOpen} className={"ml-2"}>
+                        <Collapsible open={isAIMenuOpen} onOpenChange={setIsAIMenuOpen} className="ml-2">
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton>
                                     <MessageSquare className="h-4 w-4"/>
                                     <span className="group-data-[collapsible=icon]:hidden">Assistant</span>
                                     <ChevronDown
-                                        className="ml-auto h-4 w-4 transition-transform group-data-[collapsible=icon]:hidden"
-                                    />
+                                        className="ml-auto h-4 w-4 transition-transform group-data-[collapsible=icon]:hidden"/>
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -204,12 +197,11 @@ export default function AppSidebar() {
                                 </SidebarMenuSub>
                             </CollapsibleContent>
                         </Collapsible>
-
                         <SidebarMenuItem>
                             <Link href="/calendar" passHref legacyBehavior>
-                                <SidebarMenuButton asChild isActive={isActive('/calendar')} className={"ml-2"}>
+                                <SidebarMenuButton asChild isActive={isActive('/calendar')} className="ml-2">
                                     <a className="flex items-center">
-                                        <Calendar className=" h-4 w-4"/>
+                                        <Calendar className="h-4 w-4"/>
                                         <span className="group-data-[collapsible=icon]:hidden">Calendar</span>
                                     </a>
                                 </SidebarMenuButton>
@@ -217,7 +209,7 @@ export default function AppSidebar() {
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <Link href="/tasks" passHref legacyBehavior>
-                                <SidebarMenuButton asChild isActive={isActive('/tasks')} className={"ml-2"}>
+                                <SidebarMenuButton asChild isActive={isActive('/tasks')} className="ml-2">
                                     <a className="flex items-center">
                                         <SquareCheckBig className="h-4 w-4"/>
                                         <span className="group-data-[collapsible=icon]:hidden">Tasks</span>
@@ -227,7 +219,7 @@ export default function AppSidebar() {
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <Link href="/settings" passHref legacyBehavior>
-                                <SidebarMenuButton asChild isActive={isActive('/settings')} className={"ml-2"}>
+                                <SidebarMenuButton asChild isActive={isActive('/settings')} className="ml-2">
                                     <a className="flex items-center">
                                         <Settings className="h-4 w-4"/>
                                         <span className="group-data-[collapsible=icon]:hidden">Settings</span>
@@ -236,15 +228,15 @@ export default function AppSidebar() {
                             </Link>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                            <SidebarMenuButton onClick={toggleTheme} className={"ml-2"}>
+                            <SidebarMenuButton onClick={toggleTheme} className="ml-2">
                                 {theme === 'dark' ? (
                                     <Sun className="h-4 w-4"/>
                                 ) : (
                                     <Moon className="h-4 w-4"/>
                                 )}
                                 <span className="group-data-[collapsible=icon]:hidden">
-                    {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-                  </span>
+                                    {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                                </span>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -252,17 +244,16 @@ export default function AppSidebar() {
             </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu>
-                        <SidebarTrigger/>
+                    <SidebarTrigger/>
                     <SidebarMenuItem>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton className={""}>
-                                    <Avatar className="h-6 w-6">
-                                        <AvatarImage src="https://github.com/mNandhu.png" alt="@username" />
+                                <SidebarMenuButton>
+                                    <Avatar className="h-6 w-6 mr-2">
+                                        <AvatarImage src="https://github.com/mNandhu.png" alt="@username"/>
                                         <AvatarFallback>UN</AvatarFallback>
                                     </Avatar>
                                     <span className="group-data-[collapsible=icon]:hidden">mNandhu</span>
-                                    {/*<ChevronUp className="h-4 w-4 group-data-[collapsible=icon]:hidden"/>*/}
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent
@@ -287,6 +278,5 @@ export default function AppSidebar() {
                 </SidebarMenu>
             </SidebarFooter>
         </Sidebar>
-
     )
 }
