@@ -1,13 +1,12 @@
 import React from 'react'
-import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card'
+import {Card, CardContent, CardTitle, CardHeader} from '@/components/ui/card'
 
 export default function StudyTips() {
     return (
-        <Card>
-
-            <CardTitle className="bg-blue-100 dark:bg-gray-800 dark:text-blue-100
-                text-lg font-semibold p-3 mb-4">Study Tips</CardTitle>
-
+        <Card className="rounded-xl overflow-hidden">
+            <CardHeader className="flex-shrink-0 flex flex-row items-center justify-between">
+                <CardTitle className="text-2xl font-bold flex items-center">Study Tips</CardTitle>
+            </CardHeader>
             <CardContent>
                 <ul className="list-disc list-inside space-y-2">
                     <li>Take regular breaks</li>
