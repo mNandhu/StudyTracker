@@ -59,7 +59,12 @@ export default function AIAssistant({
         setIsFetching(true)
         console.log("Attempting to fetch chat with id: ", id)
         try {
-            const response = await fetch(`http://localhost:5000/chats/${id}`)
+            const response = await fetch(`http://localhost:5000/chats/${id}`,{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
             if (!response.ok) throw new Error('Failed to fetch chat')
             const data = await response.json()
             setCurrentChat(data)
