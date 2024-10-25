@@ -253,7 +253,7 @@ export default function AppSidebar() {
                                         <AvatarImage src="https://github.com/mNandhu.png" alt="@username"/>
                                         <AvatarFallback>UN</AvatarFallback>
                                     </Avatar>
-                                    <span className="group-data-[collapsible=icon]:hidden">mNandhu</span>
+                                    <span className="group-data-[collapsible=icon]:hidden">Kiruthik</span>
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent
